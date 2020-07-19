@@ -1,0 +1,120 @@
+So now we're just going to talk
+a little bit about web scraping. I want you to come and
+visit this again later in the book. But the basic idea is just now we
+have this protocol that we can send GET requests and get data back. That's how browsers talk to servers. What scraping really is, is when we
+write a Python program that fakes or pretends to be a browser. It retrieves the web pages, it looks at
+them, and maybe extracts some information, maybe for searching or for
+more links and then goes and perhaps gets some more pages. And we call this either spidering the web
+because it kind of works its way out like a spider's web. Or we call it crawling the web,
+so it's kind of crawling and crawling and crawling from one place to another,
+and eventually it's going to crawl one link at a time, and
+it finds all or nearly all the web. Now, why might you scrape? Well, you might scrape data that
+you can't get any other way. Now, you've got to be careful,
+because it might not be legal to do this. You want to scrape
+the inventory of a competitor. Maybe you're not supposed to do that or
+maybe you posted a bunch of things to a blog and you lost
+the blog is about to get shut down. I actually used scraping recently for a Wiki that I typed a bunch of
+stuff into someone else's Wiki. And they were going to shut the Wiki
+down and I'm like, I want my pages back. And I could have pulled them all out
+by hand, but I just wrote a scraper. And I scraped all my pages back. You might write something
+that runs every night to check to see if something changed. Or you might build yourself a simple
+equivalent of a search engine. Now, there's lots of controversy about it. People who build web sites often copyright
+their material and say you can't have it. You can't just like make a online store by borrowing Amazon's
+inventory from their pages. They will be very unhappy about that and
+they'll catch you. They have terms of service and
+they can block your network. They can block your computer. They can shut your account off. And so be very careful about
+the things that you spider. Spider things like Wikipedia or dr-chuck.com, somewhere that really doesn't
+care if you look at their stuff and actually is happy to have
+their stuff looked at. So the biggest problem in spidering is
+the parsing of the HTML that comes back. And like I said before HTML
+is a nasty little representation and it turns out that when your browser
+retrieves HTML it goes through a whole bunch of things that effectively
+forgives syntax errors in HTML. Because they figured
+ah, we'll just show it. Why tell people about each syntax error? So it turns out that there is lots of HTML on the web that has syntax
+errors in it but you don't even notice it. And so you could do regular expressions,
+you could do finds, you could do splits, you could do all kinds of things and
+you would find quickly it'll work for the first two pages but the third through
+the thousandth page blows up because. I didn't realize that's what the href, I didn't realize you could
+put a newline there. Who would have put a newline there, why
+would they do that, and then you fix that. And you realize after you try to fix this
+and you try to parse all the links that there is just so many variations and
+someone has already done that. And it's a library called BeautifulSoup
+from a place called crummy.com I think the naming of this is all
+sort of this tongue in cheek of what a mess HTML is. And so instead of calling it HTML super
+parser, they just call it something silly because it's kind of a silly problem
+because HTML on the web is just so bad. And so it's kind of fun. But once you use this you've taken the easy way out. Now, the first thing that you've got to do
+is you've got to install BeautifulSoup and there's two ways to do it. I put in the code, the code folders, and
+all the zip files. So you can either go and
+follow the instructions at their site and install it, and that installs it for
+all Python programs. That's fine if you can figure that out but
+sometimes you're running on a campus computer and you can't actually
+reinstall software on that, maybe you're bringing your python programs on a USB
+stick or on a shared drive or something. And so you actually kind of have to
+locally install it and so if you make this file, you actually can download this
+file bs4.zip and then unzip it. And so if you put it in a folder
+with the URL links, this one. .py And there's a folder bs4 and
+then this is actually a folder and then all the stuff underneath it. Then in that one folder,
+BeautifulSoup will work, okay? So you can either have it installed for
+all Pythons or you can put it in any folder that
+you're going to use BeautifulSoup you make this subfolder called bs4. And it's got some .py files in it
+and etc, etc. So you unzip. You download this file and
+unzip it in to that same folder. And then, this import will work. Now until you get BeautifulSoup
+properly installed, this import is going to blow up. And so you just keep running it
+until the import works. And then the import works and
+you can focus on the rest of the program. So, you got to install it one way or
+the other. Look at the instructions. I'll probably have a little screen capture or something that shows you
+how I make this work. Okay, so assuming that you
+can import BeautifulSoup, we're going to read
+some data from the net. And we're going to import
+the BeautifulSoup library. We're going to ask for a URL. Then we are going to open it, and then do
+a .read, okay? We're going to do a .read. Remember what .read is? That says read it all. It's not a for loop that reads it. It reads the whole blob with
+newlines at the end, and it all comes in to one big string. And then we're going to tell
+BeautifulSoup to parse it. Okay, now BeautifulSoup is smart
+enough to convert all this stuff so it just takes the whole file and
+uses this HTML parser. There's some other options
+that you could have here, but that's the one that I
+recommend in this case. And then you get back an object. And what happens is,
+in this soup variable, it's somehow taken all the nasty
+bits that come from the web page and cleaned them up, and
+made a little pretty tree of things. You don't have to worry about the internal
+structure, it is a soup object. I named the variable soup
+just because it's cute to name it soup. That could be x for
+all we care. And you can ask soup some
+questions at that point. So it takes the nasty HTML and
+cleans it up. That's what this parsing is doing. It's like, that's the ad hoc heuristic
+challenging difficult part of it. Thank you BeautifulSoup for
+writing such a wonderful library. And then we can ask questions of it and
+this first question that we can ask and BeautifulSoup is a little tricky
+to use and so you'll end up reading some documentation if you want to build
+really sophisticated programs. But this basically is, we are going to
+go through all of the anchor tags in a document, give me a list of all
+the anchor tags in a document. So these tags are sitting
+there in this document, you know, blah blah blah anchor tag, blah blah blah
+anchor tag, blah blah blah anchor tag. And so what this basically says is
+give me a list of those anchor tags. Anchor tag, anchor tag,
+anchor tag, and comma, comma, comma. Now these tags are themselves objects,
+and it has the data in the anchor tag and you have to kind of query those. But given that this is a list,
+then the tag is going to go through each of the anchor tags in
+the document and iterate through them. And it's going to pull out the href. Href equals quote ... quote, right? It's pulling this text out and
+that's what we get using tag.get. So this is like a dictionary. Get the href key or None. And so then this will loop through. It retrieves
+dr-chuck.com/page1.htm. And then it prints out trivially with
+no regular expressions, no nothing. It just prints the links out. Now if you do this to a page that has more
+links you will get many links here, okay? So that is a simple use of
+the BeautifulSoup library to retrieve and parse HTML and pull out anchor tags, which is really
+sort of the beginning of a browser. I mean, a beginning of a web crawler. So if we go all the way back to
+the beginning of this chapter, we started with the notion of computers
+making phone calls using sockets. They call to a host, and
+a port within that host, and then they have a two-way socket that
+they can send and retrieve data. We have to consult the application
+protocols like HTTP. HyperText Transfer Protocol. To figure out what we send and
+how we send it and when we send it. Who talks first, what the responses
+are, and what the data is, and how to interpret that data. Like the headers, followed by
+a blank line, followed by the data. That's all part of the protocol, right? And then we made it even simpler with urllib,
+so that's just like one line, go get it. If you do a .read,
+you get the data as well. And then with BeautifulSoup,
+if you're dealing with HTML, BeautifulSoup really simplifies it. So in a surprisingly few lines of code you
+can do the hard part of a web crawler. And that's one of the things that people
+really like about Python. You think, I want to do this. And like 30 minutes later,
+you've got a basic web crawler working. And so the support for HTML,
+HTTP, and sockets in Python is one of the very, very charming things
+that people really like about Python.
